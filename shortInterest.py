@@ -19,17 +19,20 @@ import Quandl
 import smtplib
 import StringIO
 
-toAddr = ["dwin1000@gmail.com","wliu73@gmail.com"]
+scriptLocation = "https://github.com/dwin1000/wp-investing2015/blob/master/shortInterest.py"
+
+toAddr = ["XXXX@gmail.com","XXXX@gmail.com"]
+fromSender = 'XXXXX@gmail.com'
 subjectTitle = "Weekly Auto Short Interest Check"
 
-def sendEmail(toWho, subject, message,
-    login='wpmailsend', password='2island$life',
-    fromAddr='wpmailsend@gmail.com', mailServer='smtp.gmail.com:587'):
+def sendEmail(toWho, message, subject=subjectTitle,
+    login='wpmailsend', password='XXXXXXX',
+    fromAddr=fromSender, mailServer='smtp.gmail.com:587'):
 
     #header+='Cc: %s\n' % ','join(ccAddr)
     header='From:%s\n' % fromAddr
-    header+='To: \n'.join(toWho)
     header+='Subject: %s\n\n' % subject
+    header+='To: \n'.join(toWho)
 
     message=header+message
 
@@ -77,8 +80,9 @@ def main():
     outString.write("\nCBI \n")
     print >> outString, dataCBI
 
+    outString.write("\n\nScript Location: %s" % scriptLocation)
     bodyMsg = outString.getvalue()
 
-    sendEmail(subject = subjectTitle, toWho = toAddr, message = bodyMsg)
+    sendEmail(toWho = toAddr, message = bodyMsg)
 if __name__ == "__main__":
     main()
