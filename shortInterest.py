@@ -18,16 +18,21 @@ Reference: check www.quandl.com
 import Quandl
 import smtplib
 import StringIO
+import wpAuth
 
 scriptLocation = "https://github.com/dwin1000/wp-investing2015/blob/master/shortInterest.py"
 
-toAddr = ["XXXX@gmail.com","XXXX@gmail.com"]
-fromSender = 'XXXXX@gmail.com'
+wpInfo = wpAuth.gmailAuth()
+wpPasswd = wpInfo.passwd
+wpLogin = wpInfo.login
+wpServer = wpInfo.smtpServer
+toAddr = wpInfo.recipents
+fromSender = wpInfo.login+"@"+wpInfo.domain
 subjectTitle = "Weekly Auto Short Interest Check"
 
 def sendEmail(toWho, message, subject=subjectTitle,
-    login='wpmailsend', password='XXXXXXX',
-    fromAddr=fromSender, mailServer='smtp.gmail.com:587'):
+    login=wpLogin, password=wpPasswd,
+    fromAddr=fromSender, mailServer=wpServer):
 
     #header+='Cc: %s\n' % ','join(ccAddr)
     header='From:%s\n' % fromAddr
@@ -84,5 +89,7 @@ def main():
     bodyMsg = outString.getvalue()
 
     sendEmail(toWho = toAddr, message = bodyMsg)
+
+
 if __name__ == "__main__":
     main()
