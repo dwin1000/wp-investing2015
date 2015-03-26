@@ -1,0 +1,15 @@
+
+class gmailAuth(object):
+    def __init__(self):
+        self.login = ""
+        self.domain = "gmail.com"
+        self.passwd = "<hint: goal of island life>"
+        self.smtpServer = "smtp.gmail.com:587"
+        #self.recipents = ["XXXX@gmail.com","XXXXX@gmail.com"]
+
+class quandlInfo(object):
+    def __init__(self):
+        self.authtoken = "KhVeoKVw9GHh3qH6Wvt9"
+        self.collapse = "monthly"
+        self.sort_order = "desc"
+        self.rows = 5
