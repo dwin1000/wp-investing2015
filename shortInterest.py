@@ -14,6 +14,8 @@ import Quandl
 import smtplib
 import StringIO
 import wpAuth
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEText import MIMEText
 
 scriptLocation = "https://github.com/dwin1000/wp-investing2015/blob/master/shortInterest.py"
 
@@ -31,18 +33,24 @@ token = tokenQuandl.authtoken
 
 subjectTitle = "Weekly Auto Short Interest Check"
 
-def sendEmail(toWho, message, subject=subjectTitle,
+def sendEmail(message, toWho=toAddr, subject=subjectTitle,
     login=wpLogin, password=wpPasswd,
     fromAddr=fromSender, mailServer=wpServer):
 
+    header=MIMEMultipart()
+    header['From'] = fromAddr
+    header['To'] = ", ".join(toWho)
+    header['Subject'] = subject
     #header+='Cc: %s\n' % ','join(ccAddr)
-    header='From:%s\n' % fromAddr
-    header+='Subject: %s\n\n' % subject
-    header+='To: \n'.join(toWho)
+    #header='From:%s\n' % fromAddr
+    #header+='To: %s \n' % ",".join(toWho)
+    #header+='Subject: %s \n\n' % subject
 
-    message=header+message
+    header.attach(MIMEText(message,'plain'))
+    mailMsg = header.as_string()
+    print mailMsg
 
-    server = smtplib.SMTP(mailServer)
+    mailConn = smtplib.SMTP(mailServer)
 
     """
     try:
@@ -55,10 +63,10 @@ def sendEmail(toWho, message, subject=subjectTitle,
         server.quit()
     """
 
-    server.starttls()
-    server.login(login,password)
-    output = server.sendmail(fromAddr,toWho,message)
-    server.quit
+    mailConn.starttls()
+    mailConn.login(login,password)
+    output = mailConn.sendmail(fromAddr,toWho,mailMsg)
+    mailConn.quit
 
 def runQuandl(symbol):
     # calling quandl api, inputting specific dataset
@@ -79,7 +87,7 @@ def main():
     outString.write("\n\nScript Location: %s" % scriptLocation)
     bodyMsg = outString.getvalue()
 
-    sendEmail(toWho = toAddr, message = bodyMsg)
+    sendEmail(toWho=toAddr, message=bodyMsg)
     outString.close()
 
 if __name__ == "__main__":
