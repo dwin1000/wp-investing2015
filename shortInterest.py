@@ -22,6 +22,8 @@ import wpAuth
 
 scriptLocation = "https://github.com/dwin1000/wp-investing2015/blob/master/shortInterest.py"
 
+myList = ["SI/ZINC_SI", "SI/DTV_SI", "SI/CBI_SI"]
+
 wpInfo = wpAuth.gmailAuth()
 wpPasswd = wpInfo.passwd
 wpLogin = wpInfo.login
@@ -59,31 +61,19 @@ def sendEmail(toWho, message, subject=subjectTitle,
     output = server.sendmail(fromAddr,toWho,message)
     server.quit
 
+def runQuandl(symbol):
+    data = Quandl.get(symbol, authtoken="KhVeoKVw9GHh3qH6Wvt9",
+        collapse='monthly',sort_order='desc',rows=5)
+    return data
 
 def main():
     # write to memory since numpy output can't be converted to string
     outString = StringIO.StringIO()
 
-    dataZINC = Quandl.get("SI/ZINC_SI", authtoken="KhVeoKVw9GHh3qH6Wvt9",
-        collapse='monthly',sort_order='desc',rows=5)
-    dataCBI = Quandl.get("SI/CBI_SI", authtoken="KhVeoKVw9GHh3qH6Wvt9",
-        collapse='monthly',sort_order='desc',rows=5)
-    dataDTV = Quandl.get("SI/DTV_SI", authtoken="KhVeoKVw9GHh3qH6Wvt9",
-        collapse='monthly',sort_order='desc',rows=5)
-    """
-    bodyMsg = 'ZINC: \n'
-    bodyMsg += dataZINC
-    bodyMsg += 'DTV: \n'
-    bodyMsg += dataDTV
-    bodyMsg += 'CBI: \n'
-    bodyMsg += dataCBI
-    """
-    outString.write("\nZINC \n")
-    print >> outString, dataZINC
-    outString.write("\nDTV \n")
-    print >> outString, dataDTV
-    outString.write("\nCBI \n")
-    print >> outString, dataCBI
+    for x in myList:
+        output = runQuandl(x)
+        outString.write("\n"+x+"\n")
+        print >> outString, output
 
     outString.write("\n\nScript Location: %s" % scriptLocation)
     bodyMsg = outString.getvalue()
