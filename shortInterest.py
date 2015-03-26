@@ -74,7 +74,7 @@ def main():
     bodyMsg = outString.getvalue()
 
     sendEmail(toWho = toAddr, message = bodyMsg)
-
+    outString.close()
 
 if __name__ == "__main__":
     main()
