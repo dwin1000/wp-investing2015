@@ -1,16 +1,11 @@
 #!/usr/bin/python
 """
-authtoken='KhVeoKVw9GHh3qH6Wvt9'
-Sample objects and methods from Quandl
-https://www.quandl.com/api/v1/datasets/WIKI/AAPL.csv?
-sort_order=asc
-exclude_headers=true
-rows=3
-trim_start=2012-11-01
-trim_end=2013-11-30
-column=4
-collapse=quarterly
-transformation=rdiff
+Author: Darren Nguyen
+Date: 3/25/2015
+
+Script to download short interest on a list of stocks.
+The results will be emailed out using the smtplib.
+The auth info is extracted from the wpAuth module
 
 Reference: check www.quandl.com
 """
