@@ -25,6 +25,10 @@ wpLogin = wpInfo.login
 wpServer = wpInfo.smtpServer
 toAddr = wpInfo.recipents
 fromSender = wpInfo.login+"@"+wpInfo.domain
+
+tokenQuandl = wpAuth.quandlInfo()
+token = tokenQuandl.authtoken
+
 subjectTitle = "Weekly Auto Short Interest Check"
 
 def sendEmail(toWho, message, subject=subjectTitle,
@@ -57,7 +61,9 @@ def sendEmail(toWho, message, subject=subjectTitle,
     server.quit
 
 def runQuandl(symbol):
-    data = Quandl.get(symbol, authtoken="KhVeoKVw9GHh3qH6Wvt9",
+    # calling quandl api, inputting specific dataset
+    #data = Quandl.get(symbol, authtoken="KhVeoKVw9GHh3qH6Wvt9",
+    data = Quandl.get(symbol, authtoken=token,
         collapse='monthly',sort_order='desc',rows=5)
     return data
 
