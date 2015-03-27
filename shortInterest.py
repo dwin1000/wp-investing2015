@@ -16,6 +16,8 @@ import StringIO
 import wpAuth
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
+import os
+import sys
 
 scriptLocation = "https://github.com/dwin1000/wp-investing2015/blob/master/shortInterest.py"
 
@@ -25,8 +27,19 @@ wpInfo = wpAuth.gmailAuth()
 wpPasswd = wpInfo.passwd
 wpLogin = wpInfo.login
 wpServer = wpInfo.smtpServer
-toAddr = wpInfo.recipents
 fromSender = wpInfo.login+"@"+wpInfo.domain
+
+# Protection mode for either testing, running through cron
+if len(sys.argv) > 1:
+    # if we will run through cron and even if "test" exists
+    toAddr = wpInfo.recipents
+else:
+    # if cmd line && file exists, send to test
+    if os.path.isfile('test'):
+        toAddr = wpInfo.testrecipents
+    # if someone else runs from cmdline && not in test mode
+    else:
+        toAddr = wpInfo.recipents
 
 tokenQuandl = wpAuth.quandlInfo()
 token = tokenQuandl.authtoken
