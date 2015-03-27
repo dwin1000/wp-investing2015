@@ -85,7 +85,7 @@ def runQuandl(symbol):
     # calling quandl api, inputting specific dataset
     #data = Quandl.get(symbol, authtoken="KhVeoKVw9GHh3qH6Wvt9",
     data = Quandl.get(symbol, authtoken=token,
-        collapse='monthly',sort_order='desc',rows=5)
+        collapse='weekly',sort_order='desc',rows=5)
     return data
 
 def main():
