@@ -13,3 +13,17 @@ class quandlInfo(object):
         self.collapse = "monthly"
         self.sort_order = "desc"
         self.rows = 5
+
+class calbenchInfo(object):
+    def __init__(self):
+        self.apiUrl = "https://www.calbench.com/api/{0}"
+        self.email = "Xxx@gmail.com"
+        self.passwd = "XXXXX"
+        self.loginUrl = "https://www.calcbench.com/account/LogOnAjax"
+
+class gfInfo(object):
+    def __init__(self):
+        self.Url = "https://www.gurufocus.com"
+        self.email = "XXXXX"
+        self.passwd = "XXXX"
+
