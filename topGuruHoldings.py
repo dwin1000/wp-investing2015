@@ -41,10 +41,12 @@ def pd_workIt(guru, id, xlsfile, finalDF):
     df["guru"] = guru       # Add in the name of the guru
     df["Number of Shares"] = df["Number of Shares"].convert_objects(convert_numeric=True)
     df["Value ($1000)"] = df["Value ($1000)"].convert_objects(convert_numeric=True)
+    df["% of Company"] = df["% of Company"].convert_objects(convert_numeric=True)
 
     logger.debug("df.types: %s" % df.dtypes)
 
-    filterEd = df.sort(["Number of Shares"], ascending=False).head(2)
+    #filterEd = df.sort(["Number of Shares"], ascending=False).head(2)
+    filterEd = df.sort(["Value ($1000)"], ascending=False).head(3)
     finalDF = finalDF.append(filterEd)
 
     return finalDF
@@ -82,11 +84,13 @@ def main():
 
     user, passwd, url = gfLogin.setUp_WPauth()
 
+    """
     try:
         br = gfLogin.login_gf(url, user, passwd)
     except Exception, e:
         logger.error("Can't login to GF: %s" % e)
         sys.exit(1)
+    """
 
     for guru, id in guruDict.iteritems():
         link = "http://www.gurufocus.com/download_holdings.php?guru_id=" + id + "&portname=0"
@@ -100,7 +104,7 @@ def main():
         except Exception, e:
             logger.error("Can't retrieve xls file for %s: %s" % (guru,e))
 
-    finalDf = finalDf.sort(["Number of Shares"], ascending=False)
+    finalDf = finalDf.sort(["Value ($1000)"], ascending=False)
     filterDf = finalDf[['Symbol', 'guru', 'Number of Shares', 'Value ($1000)',
                 '% of Company', 'Change from the previous Quarter (%)',
                 'Percentage (%)', 'As of Date', 'Price ($)']]
